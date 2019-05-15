@@ -3,7 +3,12 @@ package pat.android.barcodereader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +20,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
     ArrayList<Student> students = new ArrayList<Student>();
     @Override
@@ -30,11 +37,19 @@ public class MainActivity extends AppCompatActivity {
             Student a = readCSV().get(i);
             students.add(a);
         }
-        StudentAdapter adapter = new StudentAdapter(students);
+        final StudentAdapter adapter = new StudentAdapter(students);
         rvStudent.setAdapter(adapter);
         rvStudent.setLayoutManager(new LinearLayoutManager(this));
         int curSize = adapter.getItemCount();
         adapter.notifyItemRangeInserted(curSize, students.size());
+        final EditText searchID = (EditText)findViewById(R.id.txtKey);
+        Button btnTim = (Button)findViewById(R.id.btnSearch);
+        btnTim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.getFilter().filter(searchID.getText().toString());
+            }
+        });
     }
 
     public ArrayList<Student> readCSV(){

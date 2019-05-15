@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:id="@+id/txtKey"
+        android:hint="Enter StudentID"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>
     <Button
