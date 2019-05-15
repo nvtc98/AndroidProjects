@@ -1,6 +1,7 @@
 package pat.android.barcodereader;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,65 +14,59 @@ import java.util.List;
 /**
  * Created by Trúc on 5/15/2019.
  */
-public class StudentAdapter extends BaseAdapter {
+public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHolder> {
 
-    private Context context;
-    private List<Student> studentList;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public ImageView imgHinh;
+        public TextView txtID, txtNAME, txtDay;
 
-    public StudentAdapter(Context context,  List<Student> studentList) {
-        this.context = context;
-        this.studentList = studentList;
-    }
+        public ViewHolder(View itemView) {
+            super(itemView);
 
-    @Override
-    public int getCount() {
-        return studentList.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return studentList.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return studentList.indexOf(getItem(position));
-    }
-
-    private class  ViewHolder{
-        ImageView imgHinh;
-        TextView txtID, txtNAME, txtDay;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        ViewHolder holder;
-        if(convertView == null){
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.row_listview,null);
-
-            holder = new ViewHolder();
-            // Anh xa view
-            holder.txtID = (TextView) convertView.findViewById(R.id.txtid);
-            holder.txtNAME = (TextView) convertView.findViewById(R.id.txtname);
-            holder.txtDay = (TextView) convertView.findViewById(R.id.txtday);
-            holder.imgHinh = (ImageView) convertView.findViewById(R.id.img);
-            convertView.setTag(holder);
+            txtID = (TextView) itemView.findViewById(R.id.txtid);
+            txtNAME = (TextView) itemView.findViewById(R.id.txtname);
+            txtDay = (TextView) itemView.findViewById(R.id.txtday);
+            imgHinh = (ImageView) itemView.findViewById(R.id.img);
         }
-        else
-        {
-            holder = (ViewHolder) convertView.getTag();
-        }
+    }
+
+    List<Student> mStudents;
+
+    int a = 0;
+
+    public StudentAdapter(List<Student> mStudents) {
+        this.mStudents = mStudents;
+    }
+
+    @Override
+    public StudentAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+
+        // Inflate the custom layout
+        View contactView = inflater.inflate(R.layout.row_listview, parent, false);
+
+        // Return a new holder instance
+        ViewHolder viewHolder = new ViewHolder(contactView);
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(StudentAdapter.ViewHolder viewHolder, int position) {
+        // Get the data model based on position
+        Student student = mStudents.get(position);
+
+        // Set item views based on your views and data model
+        viewHolder.txtID.setText(student.getId());
+        viewHolder.txtNAME.setText(student.getName());
+        viewHolder.txtDay.setText(student.getDay());
 
 
-        // Gan gia tri
-        Student student = studentList.get(position);
-        holder.txtID.setText(student.getId());
-        holder.txtNAME.setText(student.getName());
-        holder.txtDay.setText(student.getDay());
-        holder.imgHinh.setImageResource(student.getImg());
+        viewHolder.imgHinh.setImageResource(student.getImg());
+    }
 
-        return convertView;
+    @Override
+    public int getItemCount() {
+        return mStudents.size();
     }
 }
