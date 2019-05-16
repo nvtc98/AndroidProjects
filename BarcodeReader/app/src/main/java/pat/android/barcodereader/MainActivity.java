@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements StudentAdapter.OnStudentListener {
     static final String ACTION_SCAN = "com.google.zxing.client.android.SCAN";
     ArrayList<Student> students = new ArrayList<Student>();
     EditText ketqua;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             Student a = readCSV().get(i);
             students.add(a);
         }
-        final StudentAdapter adapter = new StudentAdapter(students);
+        final StudentAdapter adapter = new StudentAdapter(students,this);
         rvStudent.setAdapter(adapter);
         rvStudent.setLayoutManager(new LinearLayoutManager(this));
         int curSize = adapter.getItemCount();
@@ -52,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 adapter.getFilter().filter(searchID.getText().toString());
+                if(students.size()==0){
+                    Toast.makeText(MainActivity.this, "No result found", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -62,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 init();
             }
         });
+
     }
 
     public void init() {
@@ -72,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         //integrator.setBarcodeImageEnabled(true);
         // beep khi scan qr thành công
         integrator.setBeepEnabled(true);
+        integrator.setOrientationLocked(false);
         integrator.initiateScan();
     }
 
@@ -85,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             // SET RUNG 400 MILLISECONDS
             v.vibrate(400);
+
         }
     }
 
@@ -98,8 +105,8 @@ public class MainActivity extends AppCompatActivity {
             while ((line = reader.readLine()) != null) {
                 String[] temp_data = line.split(",");
 
-                int imgId = getResources().getIdentifier(temp_data[3], "drawable", getPackageName());
-                Student student = new Student(temp_data[0], temp_data[1], temp_data[2], imgId);
+                int imgId = getResources().getIdentifier(temp_data[2], "drawable", getPackageName());
+                Student student = new Student(temp_data[0], temp_data[1], temp_data[3], imgId);
                 studentlist.add(student);
             }
         } catch (IOException ex) {
@@ -108,11 +115,25 @@ public class MainActivity extends AppCompatActivity {
         return studentlist;
     }
 
-    public 
-
     public String GetNowDate() {
         SimpleDateFormat fmt = new SimpleDateFormat("hh:mm dd-MM-yyyy");
         Date c = Calendar.getInstance().getTime();
         return fmt.format(c);
     }
+
+    @Override
+    public void onStudentClick(int position) {
+        Student a = students.get(position);
+        Bundle b=new Bundle();
+        b.putStringArray("DetailInfo", new String[]{a.getId(),a.getName(), String.valueOf(a.getImg()),a.getDay()});
+        Intent intent= new Intent(this,DetailActivity.class);
+        intent.putExtras(b);
+        startActivity(intent);
+        //startActivityForResult(intent,1);
+    }
+
+
+
+
+
 }
