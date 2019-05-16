@@ -1,28 +1,23 @@
 package pat.android.barcodereader;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,25 +30,40 @@ public class DetailActivity extends AppCompatActivity {
         TextView txtID = (TextView) findViewById(R.id.txtDetailID);
         TextView txtName = (TextView) findViewById(R.id.txtDetailName);
         TextView txtDay = (TextView) findViewById(R.id.txtDetailDay);
-
+        Button btnUpdate = (Button)findViewById(R.id.btnUpdate);
         img.setImageResource(Integer.parseInt(array[2]));
         txtID.setText(array[0]);
         txtName.setText(array[1]);
         txtDay.setText(GetNowDate());
-        ChangeRecord("data.csv",GetNowDate());
-        update();
+        final String csv = "res/raw/rs.csv"; // Here csv file name is MyCsvFile.csv
+
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CSVWriter writer = null;
+                try {
+                    writer = new CSVWriter(new FileWriter(csv));
+
+                    List<String[]> data = new ArrayList<String[]>();
+                    data.add(new String[]{"Country", "Capital"});
+                    data.add(new String[]{"India", "New Delhi"});
+                    data.add(new String[]{"United States", "Washington D.C"});
+                    data.add(new String[]{"Germany", "Berlin"});
+
+                    writer.writeAll(data); // data is adding to csv
+
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+         });
+
     }
 
 
-    public void WriteCSVExists(Student st) throws IOException {
 
-    }
-
-
-
-
-
-    private int getRowIndex(String sFileName,String ID)
+    /*private int getRowIndex(String sFileName,String ID)
     {
         int i = 0;
         try {
@@ -77,11 +87,11 @@ public class DetailActivity extends AppCompatActivity {
         return i;
     }
 
-    public void update(){
-        String source = "data.csv";
-        String destiantion="rs.csv";
+    public void update(String ID){
+        String source = "res/raw/data.csv";
+        String destiantion="res/raw/rs.csv";
         try {
-            DetailActivity.updateCSV(source, destiantion, GetNowDate(), 0,1);
+            DetailActivity.updateCSV(source, destiantion, GetNowDate(), getRowIndex(source,ID),4);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -89,7 +99,7 @@ public class DetailActivity extends AppCompatActivity {
     private static final char SEPARATOR = ',';
     public static void updateCSV(String input, String output, String  replace, int row, int col) throws IOException {
 
-        CSVReader reader = new CSVReader(new FileReader(input),SEPARATOR);
+        CSVReader reader = new CSVReader(new FileReader(input));
         List<String[]> csvBody = reader.readAll();
         csvBody.get(row)[col]=replace;
         reader.close();
@@ -105,27 +115,28 @@ public class DetailActivity extends AppCompatActivity {
             FileOutputStream fos = openFileOutput(file, Context.MODE_APPEND);
             fos.write(text.getBytes());
             fos.close();
-          /*  while ((line = r.readLine()) != null) {
+          *//*  while ((line = r.readLine()) != null) {
                 String tokens[] = line.split(",");
                 if ( tokens[0].equals(ID)) {
                     line = line.replaceAll(".", GetNowDate());
                     Toast.makeText(DetailActivity.this,"",Toast.LENGTH_SHORT).show();
                 }
             }
-            r.close();*/
+            r.close();*//*
             Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             System.out.println(" There was an Error Reading the file. " + e.getMessage());
         }
     }
+*/
 
-
-    public static void updateCSV(String fileToUpdate, String replace,
+    /*public static void updateCSV(String fileToUpdate, String replace,
                                  int row, int col) throws IOException {
 
         File inputFile = new File(fileToUpdate);
 
 // Read existing file
+        //CSVReaderBuilder  builder = new CSVReaderBuilder(new FileReader(fileToUpdate));
         CSVReader reader = new CSVReader(new FileReader(inputFile), ',');
         List<String[]> csvBody = reader.readAll();
 // get CSV row column  and replace with by using row and column
@@ -137,7 +148,7 @@ public class DetailActivity extends AppCompatActivity {
         writer.writeAll(csvBody);
         writer.flush();
         writer.close();
-    }
+    }*/
 
 
     public static String GetNowDate() {

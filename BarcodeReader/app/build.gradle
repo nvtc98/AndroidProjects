@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 repositories {
     jcenter()
 }
-
 dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:3.0.2@aar'
     implementation 'com.google.zxing:core:3.2.0'
