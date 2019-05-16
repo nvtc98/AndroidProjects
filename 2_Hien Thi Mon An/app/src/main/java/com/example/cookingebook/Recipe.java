@@ -8,7 +8,7 @@ public class Recipe implements Serializable {
     private String Name,Desc;
     private String[] Ingredients;
     private String[] Steps;
-    public Recipe(){};
+    public Recipe(){}
 
     public Recipe(String name,String desc,String[]ingredients,String[] steps,int yield,int prep,int inactive,int cook,int photoID) {
         Prep = prep;

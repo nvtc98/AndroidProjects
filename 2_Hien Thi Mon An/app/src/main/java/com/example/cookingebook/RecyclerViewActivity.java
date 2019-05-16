@@ -26,7 +26,7 @@ public class RecyclerViewActivity extends Activity {
 
         setContentView(R.layout.recyclerview_activity);
 
-        rv = (RecyclerView) findViewById(R.id.rv);
+        rv = findViewById(R.id.rv);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
