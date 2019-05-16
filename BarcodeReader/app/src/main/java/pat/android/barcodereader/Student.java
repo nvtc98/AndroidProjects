@@ -7,7 +7,7 @@ public class Student {
     private String id;
     private String name;
     private String day;
-    private  int img;
+    private int img;
 
     public Student(String id, String name, String day, int img) {
         this.id = id;
@@ -41,10 +41,12 @@ public class Student {
     }
 
     public int getImg() {
+
         return img;
     }
 
     public void setImg(int img) {
         this.img = img;
     }
+
 }
