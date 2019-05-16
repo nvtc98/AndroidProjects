@@ -14,5 +14,4 @@
         <activity android:name=".ThumbnailActivity"/>
 
     </application>
-
 </manifest>

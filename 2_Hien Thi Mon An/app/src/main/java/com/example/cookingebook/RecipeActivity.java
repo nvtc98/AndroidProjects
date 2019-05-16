@@ -29,7 +29,7 @@ public class RecipeActivity extends Activity {
         Recipe recipe =(Recipe)intent.getSerializableExtra("recipe");
         Name.setText(recipe.getName());
         Desc.setText(recipe.getDesc());
-        CookTime.setText("Cook Time: "+recipe.getTotalTime());
+        CookTime.setText("Thời gian nấu: "+recipe.getTotalTime());
         Ingredients.setText(recipe.getIngredients());
         Steps.setText(recipe.getSteps());
     }

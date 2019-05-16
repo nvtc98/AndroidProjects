@@ -71,7 +71,7 @@ public class Recipe implements Serializable {
     }
 
     public String getIngredients() {
-        String Ingredient="Ingredients:\n";
+        String Ingredient="Thành phần:\n";
         int i=1;
         for (String I : Ingredients)
         {
@@ -94,11 +94,11 @@ public class Recipe implements Serializable {
     }
 
     public String getSteps() {
-        String Step="Directions: \n";
+        String Step="Cách thực hiện: \n";
         int i=1;
         for (String S : Steps)
         {
-            Step+="Step "+i+": "+S+"\n";
+            Step+="Bước: "+i+": "+S+"\n";
             i++;
         }
         return Step;

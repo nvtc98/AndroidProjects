@@ -51,7 +51,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
     }
 
 
-
     RVAdapter(List<Recipe> recipeList,Context context){
         this.recipeList = recipeList;
         this.context = context;
