@@ -24,8 +24,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
         CardView cv;
         PersonViewHolder(View itemView) {
             super(itemView);
-            cv = (CardView)itemView.findViewById(R.id.cv);
-              recipeName = (TextView)itemView.findViewById(R.id.person_name);
+            cv = itemView.findViewById(R.id.cv);
+              recipeName = itemView.findViewById(R.id.person_name);
             recipeName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -36,7 +36,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
                     v.getContext().startActivity(intent);
                 }
             });
-            recipePhoto = (ImageView)itemView.findViewById(R.id.person_photo);
+            recipePhoto = itemView.findViewById(R.id.person_photo);
             recipePhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -49,7 +49,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
             });
         }
     }
-
 
 
     RVAdapter(List<Recipe> recipeList,Context context){
