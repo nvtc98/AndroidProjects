@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements StudentAdapter.On
         emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
         //emailIntent.putExtra(Intent.EXTRA_CC, CC);
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "The Updated List of Selected Students ");
-        //emailIntent.putExtra(Intent.EXTRA_TEXT, "Attachment here");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "The Updated List of Selected Students ");
         emailIntent.putExtra(Intent.EXTRA_STREAM, u1);
         emailIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
