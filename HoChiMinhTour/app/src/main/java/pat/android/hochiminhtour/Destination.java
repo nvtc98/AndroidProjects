@@ -3,6 +3,7 @@ package pat.android.hochiminhtour;
 /**
  * Created by Trúc on 5/14/2019.
  */
+// Object Destination
 public class Destination {
         String name;
         String location;

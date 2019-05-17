@@ -13,6 +13,7 @@ import java.util.List;
 /**
  * Created by Trúc on 5/14/2019.
  */
+
 public class DestinationAdapter extends BaseAdapter {
 
     private Context context;
@@ -40,6 +41,7 @@ public class DestinationAdapter extends BaseAdapter {
         return 0;
     }
 
+    // View Holder
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

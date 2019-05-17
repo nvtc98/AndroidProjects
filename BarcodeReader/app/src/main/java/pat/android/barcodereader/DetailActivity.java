@@ -1,20 +1,16 @@
 package pat.android.barcodereader;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.opencsv.CSVWriter;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,39 +34,26 @@ public class DetailActivity extends AppCompatActivity  implements ActivityCompat
         txtID.setText(array[0]);
         txtName.setText(array[1]);
         txtDay.setText(GetNowDate());
-        final String csv = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/rs.csv"); // Here csv file name is MyCsvFile.csv
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //String csv = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/rs.csv");
-                try {
-                    File folder = new File(csv);
-                    boolean var = false;
-                    CSVWriter writer = null;
-                    if (!folder.exists()) {
-                        Toast.makeText(DetailActivity.this,"File ko tồn tại",Toast.LENGTH_SHORT).show();
-                        writer = new CSVWriter(new FileWriter(csv));
-                    }
-                    else
-                    {
-                        Toast.makeText(DetailActivity.this,"File tồn tại",Toast.LENGTH_SHORT).show();
 
-                    }
-
-
-                    //List<String[]> data = new ArrayList<String[]>();
-                    //data.add(new String[]{a.getId(), a.getName(), String.valueOf(a.getImg()),GetNowDate()});
-                    String[] data = new String[]{a.getId(), a.getName(), String.valueOf(a.getImg()),GetNowDate()};
-                    writer.writeNext(data); // data is adding to csv
-
-                    writer.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            //Pass data back
+                Intent intent = new Intent();
+                intent.putExtra("getDate",GetNowDate());
+                intent.putExtra("studentID",a.getId());
+                setResult(Activity.RESULT_OK,intent);
+                finish();
             }
          });
 
+    }
+
+    public static Intent makeIntent(Context context)
+    {
+        return new Intent(context,DetailActivity.class);
     }
 
     /*private void WriteCSV(Student student){
