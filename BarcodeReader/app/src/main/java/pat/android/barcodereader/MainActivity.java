@@ -90,9 +90,7 @@ public class MainActivity extends AppCompatActivity implements StudentAdapter.On
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
         integrator.setPrompt("Scan a barcode");
-        integrator.setCameraId(0);  // Use a specific camera of the device
-        //integrator.setBarcodeImageEnabled(true);
-        // beep khi scan qr thành công
+        integrator.setCameraId(0);
         integrator.setBeepEnabled(true);
         integrator.setOrientationLocked(false);
         integrator.initiateScan();
@@ -185,7 +183,6 @@ public class MainActivity extends AppCompatActivity implements StudentAdapter.On
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -199,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements StudentAdapter.On
         super.onStop();
         WriteCSV();
     }
+
     // Send Email
     public void sendEmail() {
         WriteCSV();
