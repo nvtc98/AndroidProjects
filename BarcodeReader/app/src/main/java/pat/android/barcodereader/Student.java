@@ -16,6 +16,13 @@ public class Student {
         this.img = img;
     }
 
+    public Student() {
+        this.id = id;
+        this.name = name;
+        this.day = day;
+        this.img = img;
+    }
+
     public String getId() {
         return id;
     }
