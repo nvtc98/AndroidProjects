@@ -1,6 +1,7 @@
 package pat.android.barcodereader;
 
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.opencsv.CSVWriter;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -17,7 +19,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class DetailActivity extends AppCompatActivity  {
+public class DetailActivity extends AppCompatActivity  implements ActivityCompat.OnRequestPermissionsResultCallback {
+    Student a = new Student();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +28,7 @@ public class DetailActivity extends AppCompatActivity  {
 
         Bundle b=this.getIntent().getExtras();
         String[] array=b.getStringArray("DetailInfo");
-        Student a = new Student(array[0],array[1],array[3],Integer.parseInt(array[2]));
+        a = new Student(array[0],array[1],array[3],Integer.parseInt(array[2]));
         ImageView img = (ImageView)findViewById(R.id.imgDetail);
         TextView txtID = (TextView) findViewById(R.id.txtDetailID);
         TextView txtName = (TextView) findViewById(R.id.txtDetailName);
@@ -35,14 +38,15 @@ public class DetailActivity extends AppCompatActivity  {
         txtID.setText(array[0]);
         txtName.setText(array[1]);
         txtDay.setText(GetNowDate());
-        final String csv = "res/raw/rs.csv"; // Here csv file name is MyCsvFile.csv
+        //final String csv = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/rs.csv"); // Here csv file name is MyCsvFile.csv
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CSVWriter writer = null;
+                /*String csv = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/rs.csv");
+
                 try {
-                    writer = new CSVWriter(new FileWriter(csv));
+                    CSVWriter writer = new CSVWriter(new FileWriter(csv));
 
                     List<String[]> data = new ArrayList<String[]>();
                     data.add(new String[]{"Country", "Capital"});
@@ -55,10 +59,36 @@ public class DetailActivity extends AppCompatActivity  {
                     writer.close();
                 } catch (IOException e) {
                     e.printStackTrace();
-                }
+                }*/
+                WriteCSV(a);
             }
          });
 
+    }
+
+    private void WriteCSV(Student student){
+        String csv =getExternalFilesDir(null).getAbsolutePath()+"/data.csv";
+        try {
+            String fileUrl = "/BarcodeReader/data.csv";
+            String file = android.os.Environment.getExternalStorageDirectory().getPath() + fileUrl;
+            File f = new File(file);
+
+            if(f.exists())
+                return;
+            else f.createNewFile();
+
+            CSVWriter writer = new CSVWriter(new FileWriter(csv));
+            List<String[]> data = new ArrayList<String[]>();
+            data.add(new String[]{"Country", "Capital"});
+            data.add(new String[]{"India", "New Delhi"});
+            data.add(new String[]{"United States", "Washington D.C"});
+            data.add(new String[]{"Germany", "Berlin"});
+
+            writer.writeAll(data); // data is adding to csv
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
