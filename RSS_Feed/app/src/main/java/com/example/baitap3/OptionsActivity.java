@@ -2,8 +2,6 @@ package com.example.baitap3;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -16,18 +14,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import com.example.baitap3.Classes.Category;
+import com.example.baitap3.Classes.Dish;
+import com.example.baitap3.Classes.XMLDOMParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -153,17 +151,15 @@ public class OptionsActivity extends AppCompatActivity {
             // Set info from MainAcitivy
             Intent intent = getIntent();
             RecipesID = Integer.parseInt(intent.getExtras().getString("recipes_id"));
-            app_name ="  Food.com Recipes - "+ categories.get(RecipesID).getCategoryName() + " " +  DateFormat.getDateInstance(DateFormat.FULL,  Locale.US).format(new Date());
+            app_name ="RSS Feed";
             getSupportActionBar().setTitle(app_name);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setIcon(R.mipmap.ic_launcher_food);
 
             // SetData to listView
             List<String> options_name_of_category = new ArrayList<String>();
             for(int i=0; i<categories.get(RecipesID).getDishs().size(); i++)
                 options_name_of_category.add(categories.get(RecipesID).getDishs().get(i).getDishName());
 
-            list_item = (ListView)findViewById(R.id.list_options);
+            list_item = (ListView)findViewById(R.id.listOptions);
             adapter = new ArrayAdapter<String>(getApplication(), android.R.layout.simple_list_item_1,options_name_of_category);
             list_item.setAdapter(adapter);
 

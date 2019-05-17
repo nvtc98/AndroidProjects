@@ -1,5 +1,6 @@
-package com.example.baitap3;
+package com.example.baitap3.Classes;
 
+import com.example.baitap3.Classes.Category;
 import java.util.List;
 
 public class RawData {

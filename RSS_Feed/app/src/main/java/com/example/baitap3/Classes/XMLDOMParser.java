@@ -1,4 +1,4 @@
-package com.example.baitap3;
+package com.example.baitap3.Classes;
 
 import android.util.Log;
 import org.w3c.dom.Document;
