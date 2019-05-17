@@ -118,9 +118,8 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
                     if(item.getId().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }
-                    else
-                        filteredList.clear();
                 }
+                if(filteredList.size()==0) filteredList.clear();
             }
 
             FilterResults results = new FilterResults();

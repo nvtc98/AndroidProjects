@@ -27,10 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements StudentAdapter.OnStudentListener {
@@ -158,12 +155,7 @@ public class MainActivity extends AppCompatActivity implements StudentAdapter.On
         return studentlist;
     }
 
-    public String GetNowDate() {
-        SimpleDateFormat fmt = new SimpleDateFormat("hh:mm dd-MM-yyyy");
-        Date c = Calendar.getInstance().getTime();
-        return fmt.format(c);
-    }
-
+    //btn Detail view
     @Override
     public void onStudentClick(int position) {
         Toast.makeText(this,"Touch Detail View",Toast.LENGTH_SHORT).show();
@@ -174,7 +166,6 @@ public class MainActivity extends AppCompatActivity implements StudentAdapter.On
         intent.putExtras(b);
         intent.putExtra("StudentLst",students);
         startActivityForResult(intent, REQUEST_CODE_MESSAGE);
-        //startActivityForResult(intent,1);
     }
 
     public void WriteCSV(){
@@ -184,13 +175,12 @@ public class MainActivity extends AppCompatActivity implements StudentAdapter.On
             File folder = new File(csv);
             boolean var = false;
             CSVWriter writer = new CSVWriter(new FileWriter(csv));
-
             List<String[]> data = new ArrayList<String[]>();
             for(Student i:studentsUpdated) {
-                data.add(new String[]{i.getId(), i.getName(), String.valueOf(i.getImg()), GetNowDate()});
-            }//String[] data = new String[]{a.getId(), a.getName(), String.valueOf(a.getImg()),GetNowDate()};
+                data.add(new String[]{i.getId(), i.getName(), String.valueOf(i.getImg()), DetailActivity.GetDate()});
+            }
+            //String[] data = new String[]{a.getId(), a.getName(), String.valueOf(a.getImg()),GetNowDate()};
             writer.writeAll(data); // data is adding to csv
-
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -201,25 +191,30 @@ public class MainActivity extends AppCompatActivity implements StudentAdapter.On
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        WriteCSV();
     }
 
-    protected void sendEmail() {
+    @Override
+    protected void onStop() {
+        super.onStop();
         WriteCSV();
-        File fileCSVpath = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "result.csv");
-
+    }
+    // Send Email
+    public void sendEmail() {
+        WriteCSV();
+        File fileCSVpath = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/result.csv");
         Uri u1  =  Uri.fromFile(fileCSVpath);
         String[] TO = {"toilati123vn@gmail.com"};
         //String[] CC = {"toilati123vn@gmail.com"};
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
-
-        //emailIntent.setData(Uri.parse("mailto:"));
+        emailIntent.setData(Uri.parse("mailto:"));
         emailIntent.setType("text/plain");
         emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
         //emailIntent.putExtra(Intent.EXTRA_CC, CC);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Updated List of Student Selected");
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "Attachment here");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "The Updated List of Selected Students ");
+        //emailIntent.putExtra(Intent.EXTRA_TEXT, "Attachment here");
         emailIntent.putExtra(Intent.EXTRA_STREAM, u1);
+        emailIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
             startActivity(Intent.createChooser(emailIntent, "Send mail..."));
             finish();
@@ -229,27 +224,4 @@ public class MainActivity extends AppCompatActivity implements StudentAdapter.On
             Toast.makeText(MainActivity.this, "There is no email client installed.", Toast.LENGTH_SHORT).show();
         }
     }
-
-    public void SendEmail(){
-
-        /*WriteCSV();
-        File file =new File(Environment.getExternalStorageDirectory(),"result.csv");
-
-        final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-        emailIntent.setType("plain/text");
-        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"anhtruc.phan.370.com"});
-        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "List Student Updated");
-        emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///mnt/sdcard/result.csv"));
-        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "gmail.com");
-        try {
-            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-            finish();
-            Log.i("Finished", "");
-        }
-        catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(MainActivity.this, "There is no email client installed.", Toast.LENGTH_SHORT).show();
-        }
-*/
-    }
-
 }

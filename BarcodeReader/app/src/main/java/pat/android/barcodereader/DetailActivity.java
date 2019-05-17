@@ -33,7 +33,7 @@ public class DetailActivity extends AppCompatActivity  implements ActivityCompat
         img.setImageResource(Integer.parseInt(array[2]));
         txtID.setText(array[0]);
         txtName.setText(array[1]);
-        txtDay.setText(GetNowDate());
+        txtDay.setText(GetDate());
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,7 +42,7 @@ public class DetailActivity extends AppCompatActivity  implements ActivityCompat
 
             //Pass data back
                 Intent intent = new Intent();
-                intent.putExtra("getDate",GetNowDate());
+                intent.putExtra("getDate",GetDate());
                 intent.putExtra("studentID",a.getId());
                 setResult(Activity.RESULT_OK,intent);
                 finish();
@@ -297,8 +297,8 @@ public class DetailActivity extends AppCompatActivity  implements ActivityCompat
     }*/
 
 
-    public static String GetNowDate() {
-        SimpleDateFormat fmt = new SimpleDateFormat("hh:mm dd-MM-yyyy");
+    public static String GetDate() {
+        SimpleDateFormat fmt = new SimpleDateFormat("hh:mm:ss a dd-MM-yyyy");
         Date c = Calendar.getInstance().getTime();
         return fmt.format(c);
     }
