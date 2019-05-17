@@ -26,7 +26,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements StudentAdapter.OnStudentListener {
-    static final String ACTION_SCAN = "com.google.zxing.client.android.SCAN";
     ArrayList<Student> students = new ArrayList<Student>();
     EditText ketqua;
     @Override
@@ -53,9 +52,11 @@ public class MainActivity extends AppCompatActivity implements StudentAdapter.On
             @Override
             public void onClick(View v) {
                 adapter.getFilter().filter(searchID.getText().toString());
+                // Not result found
                 if(students.size()==0){
                     Toast.makeText(MainActivity.this, "No result found", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 
@@ -128,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements StudentAdapter.On
         b.putStringArray("DetailInfo", new String[]{a.getId(),a.getName(), String.valueOf(a.getImg()),a.getDay()});
         Intent intent= new Intent(this,DetailActivity.class);
         intent.putExtras(b);
+        intent.putExtra("StudentLst",students);
         startActivity(intent);
         //startActivityForResult(intent,1);
     }

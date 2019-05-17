@@ -1,12 +1,14 @@
 package pat.android.barcodereader;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.opencsv.CSVWriter;
 
@@ -14,10 +16,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 public class DetailActivity extends AppCompatActivity  implements ActivityCompat.OnRequestPermissionsResultCallback {
     Student a = new Student();
@@ -38,35 +38,42 @@ public class DetailActivity extends AppCompatActivity  implements ActivityCompat
         txtID.setText(array[0]);
         txtName.setText(array[1]);
         txtDay.setText(GetNowDate());
-        //final String csv = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/rs.csv"); // Here csv file name is MyCsvFile.csv
+        final String csv = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/rs.csv"); // Here csv file name is MyCsvFile.csv
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*String csv = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/rs.csv");
-
+                //String csv = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/rs.csv");
                 try {
-                    CSVWriter writer = new CSVWriter(new FileWriter(csv));
+                    File folder = new File(csv);
+                    boolean var = false;
+                    CSVWriter writer = null;
+                    if (!folder.exists()) {
+                        Toast.makeText(DetailActivity.this,"File ko tồn tại",Toast.LENGTH_SHORT).show();
+                        writer = new CSVWriter(new FileWriter(csv));
+                    }
+                    else
+                    {
+                        Toast.makeText(DetailActivity.this,"File tồn tại",Toast.LENGTH_SHORT).show();
 
-                    List<String[]> data = new ArrayList<String[]>();
-                    data.add(new String[]{"Country", "Capital"});
-                    data.add(new String[]{"India", "New Delhi"});
-                    data.add(new String[]{"United States", "Washington D.C"});
-                    data.add(new String[]{"Germany", "Berlin"});
+                    }
 
-                    writer.writeAll(data); // data is adding to csv
+
+                    //List<String[]> data = new ArrayList<String[]>();
+                    //data.add(new String[]{a.getId(), a.getName(), String.valueOf(a.getImg()),GetNowDate()});
+                    String[] data = new String[]{a.getId(), a.getName(), String.valueOf(a.getImg()),GetNowDate()};
+                    writer.writeNext(data); // data is adding to csv
 
                     writer.close();
                 } catch (IOException e) {
                     e.printStackTrace();
-                }*/
-                WriteCSV(a);
+                }
             }
          });
 
     }
 
-    private void WriteCSV(Student student){
+    /*private void WriteCSV(Student student){
         String csv =getExternalFilesDir(null).getAbsolutePath()+"/data.csv";
         try {
             String fileUrl = "/BarcodeReader/data.csv";
@@ -79,18 +86,144 @@ public class DetailActivity extends AppCompatActivity  implements ActivityCompat
 
             CSVWriter writer = new CSVWriter(new FileWriter(csv));
             List<String[]> data = new ArrayList<String[]>();
-            data.add(new String[]{"Country", "Capital"});
-            data.add(new String[]{"India", "New Delhi"});
-            data.add(new String[]{"United States", "Washington D.C"});
-            data.add(new String[]{"Germany", "Berlin"});
+            data.add(new String[]{a.getId(), a.getName(), String.valueOf(a.getImg()),GetNowDate()});
 
             writer.writeAll(data); // data is adding to csv
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
+    /*public void exportEmailInCSV() throws IOException {
+        {
+
+            File folder = new File(Environment.getExternalStorageDirectory()
+                    + "/Folder");
+
+            boolean var = false;
+            if (!folder.exists())
+                var = folder.mkdir();
+
+            System.out.println("" + var);
+
+
+            final String filename = folder.toString() + "/" + "Test.csv";
+
+            // show waiting screen
+            CharSequence contentTitle = getString(R.string.app_name);
+            final ProgressDialog progDailog = ProgressDialog.show(
+                    DetailActivity.this, contentTitle, "even geduld aub...",
+                    true);//please wait
+            final Handler handler = new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+
+
+
+
+                }
+            };
+
+            new Thread() {
+                public void run() {
+                    try {
+
+                        FileWriter fw = new FileWriter(filename);
+
+                        Cursor cursor = stu.selectAll();
+
+                        fw.append("No");
+                        fw.append(',');
+
+                        fw.append("code");
+                        fw.append(',');
+
+                        fw.append("nr");
+                        fw.append(',');
+
+                        fw.append("Orde");
+                        fw.append(',');
+
+                        fw.append("Da");
+                        fw.append(',');
+
+                        fw.append("Date");
+                        fw.append(',');
+
+                        fw.append("Leverancier");
+                        fw.append(',');
+
+                        fw.append("Baaln");
+                        fw.append(',');
+
+                        fw.append("asd");
+                        fw.append(',');
+
+                        fw.append("Kwaliteit");
+                        fw.append(',');
+
+                        fw.append("asd");
+                        fw.append(',');
+
+                        fw.append('\n');
+
+                        if (cursor.moveToFirst()) {
+                            do {
+                                fw.append(cursor.getString(0));
+                                fw.append(',');
+
+                                fw.append(cursor.getString(1));
+                                fw.append(',');
+
+                                fw.append(cursor.getString(2));
+                                fw.append(',');
+
+                                fw.append(cursor.getString(3));
+                                fw.append(',');
+
+                                fw.append(cursor.getString(4));
+                                fw.append(',');
+
+                                fw.append(cursor.getString(5));
+                                fw.append(',');
+
+                                fw.append(cursor.getString(6));
+                                fw.append(',');
+
+                                fw.append(cursor.getString(7));
+                                fw.append(',');
+
+                                fw.append(cursor.getString(8));
+                                fw.append(',');
+
+                                fw.append(cursor.getString(9));
+                                fw.append(',');
+
+                                fw.append(cursor.getString(10));
+                                fw.append(',');
+
+                                fw.append('\n');
+
+                            } while (cursor.moveToNext());
+                        }
+                        if (cursor != null && !cursor.isClosed()) {
+                            cursor.close();
+                        }
+
+                        // fw.flush();
+                        fw.close();
+
+                    } catch (Exception e) {
+                    }
+                    handler.sendEmptyMessage(0);
+                    progDailog.dismiss();
+                }
+            }.start();
+
+        }
+
+    }*/
 
 
     /*private int getRowIndex(String sFileName,String ID)

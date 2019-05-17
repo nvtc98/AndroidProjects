@@ -1,9 +1,11 @@
 package pat.android.barcodereader;
 
+import java.io.Serializable;
+
 /**
  * Created by Trúc on 5/15/2019.
  */
-public class Student {
+public class Student implements Serializable {
     private String id;
     private String name;
     private String day;

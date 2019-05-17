@@ -110,7 +110,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
         protected FilterResults performFiltering(CharSequence constraint) {
             List<Student> filteredList = new ArrayList<>();
             if (constraint == null || constraint.length() == 0) {
-                filteredList.clear();
+                filteredList.addAll(mStudentsFull);
             }
             else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
@@ -118,6 +118,8 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
                     if(item.getId().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }
+                    else
+                        filteredList.clear();
                 }
             }
 
